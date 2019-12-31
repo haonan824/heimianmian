@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
     <div class="app-container">
-      面试技巧
+      文章管理
     <el-button @click="$router.push({name:'articles-add'})">新增技巧</el-button>
     </div>
   </div>

@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'TagsAdd',
+  name: 'SubjectsAdd',
   data() {
     return {}
   }
@@ -15,3 +15,4 @@ export default {
 
 <style scoped>
 </style>
+

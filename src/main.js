@@ -16,6 +16,7 @@ import 'font-awesome/css/font-awesome.css'
 /*
  * 注册 - 业务模块
  */
+import {quillEditor} from 'vue-quill-editor'
 import dashboard from '@/module-dashboard/' // 面板
 import base from '@/module-manage/' // 用户管理
 // import list from '@/module-list/' // 列表页
@@ -29,7 +30,6 @@ Vue.use(base, store)
 // Vue.use(form, store)
 // Vue.use(details, store)
 Vue.use(hmmm, store)
-
 /*
  * 注册 - 组件
  */

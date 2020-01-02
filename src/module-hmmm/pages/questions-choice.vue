@@ -26,12 +26,22 @@
         </el-form-item>
         <el-form-item label="难度">
           <el-select v-model="formData.params.difficulty" placeholder="请选择">
-            <el-option :label="item.label" :value="item.value" v-for="item in difficulty" :key="item.value"></el-option>
+            <el-option
+              :label="item.label"
+              :value="item.value"
+              v-for="item in difficulty"
+              :key="item.value"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="试题类型">
           <el-select v-model="formData.params.questionType" placeholder="请选择">
-            <el-option :label="item.label" :value="item.value" v-for="item in questionType" :key="item.value"></el-option>
+            <el-option
+              :label="item.label"
+              :value="item.value"
+              v-for="item in questionType"
+              :key="item.value"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="标签">
@@ -61,7 +71,12 @@
         </el-form-item>
         <el-form-item label="二级目录">
           <el-select v-model="formData.params.catalogID" placeholder="请选择">
-            <el-option :label="item.label" :value="item.value" v-for="item in catalog" :key="item.value"></el-option>
+            <el-option
+              :label="item.label"
+              :value="item.value"
+              v-for="item in catalog"
+              :key="item.value"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="城市">
@@ -81,7 +96,7 @@
         </el-form-item>
       </el-form>
       <el-row type="flex" justify="center">
-        <el-button @click="empty">清除</el-button>
+        <el-button @click="clear">清除</el-button>
         <el-button type="primary" @click="search">搜索</el-button>
       </el-row>
       <!-- 发布状态 -->
@@ -101,7 +116,7 @@
             <span v-if="scpoe.row.subjectID == 1">java</span>
             <span v-else-if="scpoe.row.subjectID == 2">javascript</span>
             <span v-else-if="scpoe.row.subjectID == 3">C++</span>
-            <span v-else>其他</span>
+            <span v-else>-</span>
           </template>
         </el-table-column>
         <el-table-column label="题型" prop="questionType">
@@ -124,7 +139,6 @@
             <span v-if="scope.row.difficulty == 0">简单</span>
             <span v-else-if="scope.row.difficulty == 1">一般</span>
             <span v-else-if="scope.row.difficulty == 2">困难</span>
-            <span v-else-if="scope.row.difficulty == 3">烧脑</span>
             <span v-else>其他</span>
           </template>
         </el-table-column>
@@ -146,12 +160,12 @@
           </template>
         </el-table-column>
         <el-table-column label="操作" prop="st" width="200px">
-          <template>
-            <span>审核</span>
-            <span>预览</span>
-            <span>上架</span>
-            <span>修改</span>
-            <span>删除</span>
+          <template slot-scope="scpoe">
+            <el-button type="text" @click="auditChoice(scpoe.row)">审核</el-button>
+            <el-button type="text" @click="previewChoice(scpoe.row)">预览</el-button>
+            <el-button type="text" @click="shelvesChoice(scpoe.row)">上架</el-button>
+            <el-button type="text" @click="amendChoice(scpoe.row)">修改</el-button>
+            <el-button type="text" @click="deleteChoice(scpoe.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -173,7 +187,11 @@
 </template>
 
 <script>
-import { choice as ChoiceQuestions } from "../../api/hmmm/questions";
+import {
+  choice as ChoiceQuestions,
+  choicePublish,
+  remove as removeQuestions
+} from "../../api/hmmm/questions";
 import { provinces, citys } from "../../api/hmmm/citys";
 import { simple as subjectsList } from "../../api/hmmm/subjects";
 import { parseTime } from "../../filters";
@@ -233,12 +251,37 @@ export default {
     };
   },
   methods: {
+    // Choice操作
+    auditChoice(obj) {},
+
+    previewChoice(obj) {},
+
+    async shelvesChoice(obj) {
+      await this.$confirm("您确定要执行此操作吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      });
+      await choicePublish(obj)
+    },
+    amendChoice(obj) {
+      this.$router.push(`new?id=${obj.id}`)
+    },
+    async deleteChoice(obj) {
+      await this.$confirm("删除操作无法恢复，您是否要继续？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      });
+      await removeQuestions(obj)
+      this.GetChoice();
+    },
+
     async screening() {
       let tgasData = await simpleTags();
       this.tags = tgasData.data;
       let catalog = await simpleDirectorys();
-      this.catalog = catalog.data
-      
+      this.catalog = catalog.data;
     },
     // 发布状态
     async publishStates() {
@@ -270,7 +313,7 @@ export default {
 
       this.GetChoice(this.formData.params);
     },
-    empty() {
+    clear() {
       this.formData.params = {};
       this.GetChoice();
       this.switchCity();

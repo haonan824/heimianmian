@@ -65,8 +65,7 @@
         </el-form-item>
         <el-form-item label="录入人">
           <el-select v-model="formData.params.creatorID" placeholder="请选择">
-            <el-option label="超级管理员" value="1"></el-option>
-            <el-option label="编辑" value="2"></el-option>
+            <el-option :label="item.username" :value="item.id" v-for="item in usersName" :key="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="二级目录">
@@ -86,7 +85,7 @@
         </el-form-item>
         <el-form-item label="区域">
           <el-select v-model="formData.params.city" placeholder="请选择">
-            <el-option :label="item" :value="item" v-for="(item,index) in citys" :key="index"></el-option>
+            <el-option :label="item" :value="item" v-for="(item,index) in getCitys" :key="index"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="方向">
@@ -127,7 +126,11 @@
             <span v-else>其他</span>
           </template>
         </el-table-column>
-        <el-table-column label="题干" prop="question"></el-table-column>
+        <el-table-column label="题干" prop="question" width="150px">
+          <template slot-scope="scpoe">
+            <span v-html="scpoe.row.question"></span>
+          </template>
+        </el-table-column>
         <el-table-column label="录入时间" prop="addDate" width="160px">
           <template slot-scope="scpoe">
             <span>{{ scpoe.row.addDate | parseTime }}</span>
@@ -180,7 +183,6 @@
           :page-size="formData.params.pageSize"
           :current-page="formData.params.page"
         ></el-pagination>
-        {{page.page}}
       </el-row>
     </el-card>
   </div>
@@ -204,6 +206,7 @@ import {
   publishType
 } from "../../api/hmmm/constants";
 import { simple as simpleDirectorys } from "../../api/hmmm/directorys";
+import { simple as usersName } from '../../api/base/users';
 export default {
   // name: "QuestionsChoice",
   data() {
@@ -218,6 +221,7 @@ export default {
       chkType, // 状态
       publishType, // 发布状态
       catalog: [], // 二级目录
+      usersName: [], // 录入人
       publishState: -1,
       // form表单数据
       formData: {
@@ -251,6 +255,11 @@ export default {
     };
   },
   methods: {
+    // 获取录入人
+    async getUsersName() {
+      let userName = await usersName()
+      this.usersName = userName.data
+    },
     // Choice操作
     auditChoice(obj) {},
 
@@ -262,10 +271,10 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       });
-      await choicePublish(obj)
+      await choicePublish(obj);
     },
     amendChoice(obj) {
-      this.$router.push(`new?id=${obj.id}`)
+      this.$router.push(`new?id=${obj.id}`);
     },
     async deleteChoice(obj) {
       await this.$confirm("删除操作无法恢复，您是否要继续？", "提示", {
@@ -273,7 +282,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       });
-      await removeQuestions(obj)
+      await removeQuestions(obj);
       this.GetChoice();
     },
 
@@ -334,11 +343,18 @@ export default {
       this.citys = citys(city);
     }
   },
-
+  computed: {
+    getCitys() {
+      return citys(this.formData.params.province)
+    }
+  },
   created() {
     this.GetChoice();
     this.GetSubjectsList();
     this.screening();
+    this.getUsersName();
+    console.log(usersName);
+    
   }
 };
 </script>

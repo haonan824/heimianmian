@@ -3,14 +3,14 @@
  * @Date: 2019-04-09 14:39:32
  * @Last Modified by: taoshiwei
  * @Last Modified time: 2019-04-29 14:56:00
- *
+ * 
  * 目录
  */
 
 import { createAPI } from '@/utils/request'
 
 // 目录列表
-export const list = data => createAPI('/directorys', 'get', data)
+export const list = data => createAPI('/directorys', 'get', data) 
 
 // 目录简单列表
 export const simple = data => createAPI('/directorys/simple', 'get', data)

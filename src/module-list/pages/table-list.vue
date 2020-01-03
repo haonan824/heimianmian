@@ -267,8 +267,8 @@ export default {
     },
     handleSave(isSave) {
       if (isSave) {
-        this.$refs['dataForm'].validate(valid => {
-          if (valid) {
+        this.$refs['dataForm'].validate(isOK => {
+          if (isOK) {
             this.dialogVisible = false
             this.$message({
               message: '保存成功',

@@ -97,6 +97,7 @@ import 'quill/dist/quill.bubble.css'
 export default {
   data() {
     return {
+      a:0,
       xuanxiang:['A','B','C','D','E','F','G','H','Y','J','K','L'],
       subject:[],//学科
       catalogue:[],//目录
@@ -143,10 +144,10 @@ export default {
   methods:{
     danxuan(index){
         let options = this.formDate.options.map((item, i) => {
-        i === index ? (item.isRight = 1) : (item.isRight = 0);
+        i === index ? (item.isRight = true) : (item.isRight = false);
         return item;
       });
-      console.log(options);
+      // console.log(options);
     },
     removeDomain(item) { //删除选项
         var index = this.formDate.options.indexOf(item)

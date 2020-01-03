@@ -58,7 +58,7 @@
         <template slot-scope="obj">
         <el-button type="text" >学科分类</el-button>
         <el-button type="text" >学科标签</el-button>
-        {{obj.row}}
+        <!-- {{obj.row}} -->
         <el-button type="text"  @click="toModify(obj.row)">修改</el-button>
         <el-button type="text" @click="DeleteSubject(obj.row.id)">删除</el-button>
         </template>
@@ -122,7 +122,7 @@ subjectName:[{required:true,message:'学科名称不能为空',trigger:blur}],
   },
 methods:{
   formatterStatus(cellValue){
-    console.log(cellValue);
+    // console.log(cellValue);
     if (cellValue.isFrontDisplay===1) {
       cellValue.isFrontDisplay='显示'
     }else{

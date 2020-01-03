@@ -45,7 +45,6 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.config.productionTip = false
-
 /* eslint-disable */
 new Vue({
   el: '#app',

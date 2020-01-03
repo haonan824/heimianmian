@@ -135,29 +135,45 @@ methods:{
     detail({id:row.id}).then((result)=>{
       this.formData=result.data
     })
-        update({id:row.id,subjectName:row.subjectName,isFrontDisplay:row.isFrontDisplay}).then(()=>{
-            //  alert(123)
-        //发布完学科名称清空
-        this.formData={
-           subjectName:"",
-        }
-        // 发布完弹框自动关闭，数据重新获取，列表重新刷新
-        // this.closeDialog()
-        this.getComment()
-        })
+        // update({id:row.id,subjectName:row.subjectName,isFrontDisplay:row.isFrontDisplay}).then(()=>{
+        //     //  alert(123)
+        // //发布完学科名称清空
+        // this.formData={
+        //    subjectName:"",
+        // }
+        // // 发布完弹框自动关闭，数据重新获取，列表重新刷新
+        // // this.closeDialog()
+        // this.getComment()
+        // })
   },
   AddSubjectName(){
     this.$refs.form.validate((isOK)=>{
-      subjectAdd(this.formData).then(()=>{
+    if (isOK) {
+        if (this.formData.id) {
+          update(this.formData).then(()=>{
         // alert(123)
         //发布完学科名称清空
         this.formData={
            subjectName:"",
         }
-        // 发布完弹框自动关闭，数据重新获取，列表重新刷新
+        // 发布完弹框自动关闭，数据重新获取,列表重新刷新
         this.closeDialog()
         this.getComment()
       })
+        }else{
+          subjectAdd(this.formData).then(()=>{
+        // alert(123)
+        //发布完学科名称清空
+        this.formData={
+           subjectName:"",
+        }
+        // 发布完弹框自动关闭，数据重新获取,列表重新刷新
+        this.closeDialog()
+        this.getComment()
+      })
+        }
+      
+      }
     })
   },
   cancel(){

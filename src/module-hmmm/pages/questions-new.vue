@@ -1,5 +1,6 @@
 <template>
   <div class="dashboard-container">
+<<<<<<< HEAD
     <!-- <div class="app-container">题库添加</div> -->
     <el-row class="boss">
       <el-form ref='checkout' :model='formDate' :rules="regulation"> 
@@ -80,6 +81,9 @@
           <el-button @click="resetForm('checkout')">清空</el-button>
       </el-form>
     </el-row>
+=======
+    <div class="app-container">题库添加</div>
+>>>>>>> origin/liwenzhi
   </div>
 </template>
 
@@ -95,6 +99,7 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 export default {
+<<<<<<< HEAD
   data() {
     return {
       a:0,
@@ -203,15 +208,23 @@ export default {
     enterpriselist().then(res =>{ //获取企业
       this.enterprise = res.data.items
     })
+=======
+  name: 'QuestionsNew',
+  data() {
+    return {}
+>>>>>>> origin/liwenzhi
   }
-};
+}
 </script>
 
 <style scoped>
+<<<<<<< HEAD
 .boss {
   margin: 20px;
   padding: 50px 100px;
   background: #fff;
   box-shadow: 0px 0px 20px #ccc;
 }
+=======
+>>>>>>> origin/liwenzhi
 </style>
